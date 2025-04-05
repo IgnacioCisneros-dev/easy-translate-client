@@ -47,10 +47,7 @@ router = APIRouter(
 )
 async def translate_text(text: str, target_language: str):
     try:
-        response = translate_text_to_target_language(
-            text=text,
-            language_code=target_language
-        )
+        response = translate_text_to_target_language(text=text, language_code=target_language)
         
         return JSONResponse(
             status_code=status.HTTP_200_OK,
