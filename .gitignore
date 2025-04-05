@@ -1,0 +1,9 @@
+.venv
+.env
+.vscode
+__pycache__
+
+Config/__pycache__
+Models/__pycache__
+Routes/__pycache__
+Services/__pycache__
