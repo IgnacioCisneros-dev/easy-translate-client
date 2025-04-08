@@ -2,7 +2,15 @@
 import os
 from google.cloud import translate_v3
 from google.oauth2 import service_account
+from google.auth import credentials
 from Config.enviroments import GOOGLE_APPLICATION_CREDENTIALS
+
+#Get the path where the file of a credentials of google
+google_application_credentials = os.getenv('GOOGLE_APPLICATION_CREDENTIALS')
+
+#Check if virtual enviroment is set, if not, raise an error
+if not google_application_credentials:
+    raise EnvironmentError("The GOOGLE APPLICATION CREDENTIALS not found.")
 
 # Set Google Cloud credentials from key.json file
 credentials = service_account.Credentials.from_service_account_file(GOOGLE_APPLICATION_CREDENTIALS)
