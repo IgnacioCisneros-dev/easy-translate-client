@@ -43,7 +43,8 @@ try:
         }
     }
     
-    GOOGLE_APPLICATION_CREDENTIALS = config_env['GOOGLE_APPLICATION_CREDENTIALS']
+    #key_json = config_env['KEY_JSON']
+    project_id = config_env['PROJECT_ID']
     
 except Exception as ex:
     raise Exception(f"Error loading configuration: {str(ex)}")

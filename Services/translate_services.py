@@ -1,20 +1,10 @@
 # Imports the Google Cloud Translation library
 import os
 from google.cloud import translate_v3
-from google.oauth2 import service_account
-from google.auth import credentials
-from Config.enviroments import GOOGLE_APPLICATION_CREDENTIALS
+from Config.enviroments import key_json,project_id
 
-#Get the path where the file of a credentials of google
-google_application_credentials = os.getenv('GOOGLE_APPLICATION_CREDENTIALS')
+client = translate_v3.TranslationServiceClient()
 
-#Check if virtual enviroment is set, if not, raise an error
-if not google_application_credentials:
-    raise EnvironmentError("The GOOGLE APPLICATION CREDENTIALS not found.")
-
-# Set Google Cloud credentials from key.json file
-credentials = service_account.Credentials.from_service_account_file(GOOGLE_APPLICATION_CREDENTIALS)
-PROJECT_ID = credentials.project_id
 
 
 # Initialize Translation client
@@ -30,8 +20,8 @@ def translate_text_to_target_language(
             Available languages: https://cloud.google.com/translate/docs/languages#neural_machine_translation_model
     """
 
-    client = translate_v3.TranslationServiceClient()
-    parent = f"projects/{PROJECT_ID}/locations/global"
+    
+    parent = f"projects/{project_id}/locations/global"
     # Translate text from English to chosen language
     # Supported mime types: # https://cloud.google.com/translate/docs/supported-formats
     response = client.translate_text(
