@@ -1,7 +1,7 @@
 # Imports the Google Cloud Translation library
 import os
 from google.cloud import translate_v3
-from Config.enviroments import key_json,project_id
+from Config.enviroments import project_id
 
 client = translate_v3.TranslationServiceClient()
 
