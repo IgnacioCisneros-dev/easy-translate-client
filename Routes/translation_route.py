@@ -1,7 +1,4 @@
-from fastapi import APIRouter, status, HTTPException
-from fastapi.responses import JSONResponse
-from fastapi.middleware.cors import CORSMiddleware
-from Models.response_translation_text import Translation, TranslationResponse
+from fastapi import APIRouter
 from Services.translate_services import translate_text_to_target_language
 
 router = APIRouter(
@@ -48,26 +45,6 @@ router = APIRouter(
 async def translate_text(text: str, target_language: str):
     try:
         response = translate_text_to_target_language(text=text, language_code=target_language)
-        
-        return JSONResponse(
-            status_code=status.HTTP_200_OK,
-            content=TranslationResponse(
-                translations=[
-                    Translation(
-                        translated_text=response.translations[0].translated_text,
-                        source_language="en-US",
-                        target_language=target_language
-                    )
-                ]
-            ).dict(),
-            headers={
-                "Access-Control-Allow-Origin": "*",
-                "Access-Control-Allow-Methods": "POST",
-                "Access-Control-Allow-Headers": "Content-Type"
-            }
-        )
+        return response       
     except Exception as e:
-        raise HTTPException(
-            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-            detail=f"Translation failed: {str(e)}"
-        )
+        raise
