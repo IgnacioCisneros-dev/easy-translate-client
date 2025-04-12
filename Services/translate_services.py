@@ -1,9 +1,12 @@
 import os
+import requests
+import json
 from google.cloud import translate_v3
 from fastapi import HTTPException, status
 from fastapi.responses import JSONResponse
 from Models.response_translation_text import Translation, TranslationResponse
-from Config.enviroments import project_id #, key_json
+from Config.enviroments import project_id, url_dictionary #, key_json
+from Models.response_dictionary import ResponseDictionary
 
 client = translate_v3.TranslationServiceClient()
 #client = translate_v3.TranslationServiceClient.from_service_account_json(key_json)
@@ -55,3 +58,41 @@ def translate_text_to_target_language(text: str, language_code: str,) -> transla
         
     except Exception as e:
         raise HTTPException(status.HTTP_500_INTERNAL_SERVER_ERROR, f'There was a problem, error: {e} Please try again.')
+
+def get_details_translation(word: str) -> ResponseDictionary:
+    """
+    Fetches detailed dictionary information for a given word using an external API.
+
+    This function makes a GET request to the dictionary API, decodes the JSON response, 
+    and maps it into a `ResponseDictionary` Pydantic model.
+
+    Args:
+        word (str): The word to fetch translation and definition details for.
+
+    Returns:
+        ResponseDictionary: A structured model containing definitions, phonetics, 
+                            synonyms, antonyms, and other metadata for the word.
+
+    Raises:
+        HTTPException: If the external API returns an HTTP error.
+        Exception: For any other unexpected errors during the request or parsing process.
+    """
+    try:
+        url = f'{url_dictionary}{word}'                
+        response = requests.get(url)
+        response.raise_for_status()
+        
+        json_data = json.loads(response.content.decode("utf-8"))
+        response_data = json_data[0]
+        
+        response_dictionary = ResponseDictionary(**response_data)        
+        return response_dictionary
+        
+    except HTTPException as ex:
+        raise
+    
+    except requests.exceptions.HTTPError as ex:
+        raise HTTPException(status_code=ex.response.status_code, detail=ex.response.reason)
+        
+    except Exception as e:
+        raise

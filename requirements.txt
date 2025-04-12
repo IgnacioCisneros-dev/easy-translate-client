@@ -4,3 +4,4 @@ uuid
 fastapi[standard]==0.115.8
 google-cloud-translate==2.0.1
 uvicorn
+requests

@@ -9,7 +9,7 @@ config_env = {
 
 try:
     CONFIG_APP = {
-        'title': "API Translation Client",
+        'title': "Translation Client API",
         'description': 'API Client that provides seamless integration with Google Cloud Translation services, enabling fast and accurate text translation across multiple languages',
         'version': "1.0.0",
         'contact': {
@@ -45,6 +45,7 @@ try:
     
     #key_json = config_env['KEY_JSON']
     project_id = config_env['PROJECT_ID']
+    url_dictionary = config_env['URL_DICTIONARY_API']
     
 except Exception as ex:
     raise Exception(f"Error loading configuration: {str(ex)}")
